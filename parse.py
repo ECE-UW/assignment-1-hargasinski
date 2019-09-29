@@ -51,10 +51,14 @@ def parse(line):
 
     # ensure the input was valid
     if not command_info:
-        return throw_error('Could not parse command and/or street name')
+        return throw_error('Could not parse command and/or street name.')
     elif command_info.group(1) in ['a', 'c'] and not r_valid_input.findall(line):
+        if not command_info.group(2):
+            return throw_error(
+                'Could not parse street name.'
+            )
         return throw_error(
-            'Expected a space between the street name and start of the coordinates'
+            'Expected a space between the street name and start of the coordinates.'
         )
 
     # parse the coordinates, if present
