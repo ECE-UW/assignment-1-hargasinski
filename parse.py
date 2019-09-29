@@ -1,10 +1,12 @@
+from __future__ import print_function
+import sys
 import re
 
 from street import Point
 
 
 def throw_error(msg):
-    print("Error: %s" % msg)
+    print("Error: %s" % msg, file=sys.stderr)
 
 
 """

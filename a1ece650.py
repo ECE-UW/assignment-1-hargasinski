@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import sys
 
 from graph import Graph
@@ -9,7 +11,7 @@ graph = Graph()
 
 
 def throw_error(msg):
-    print("Error: %s" % msg)
+    print("Error: %s" % msg, file=sys.stderr)
 
 
 def add_street(street_name, coordinates):
