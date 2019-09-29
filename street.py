@@ -1,15 +1,18 @@
-POS_ELIPSON = 0.0001
-ELIPSON = 1e-9
+POS_EPSILON = 0.0001
+EPSILON = 1e-9
+
 
 # numerical accuracies and positional accuracies are different, so we need two
 # different functions to compare them. A different in 0.0001 of a slope is
 # reasonable, while if two points are within that range, we can assume they are
 # equivalent
-def isFloatEqual(a, b):
-    return abs(a - b) <= ELIPSON
+def is_float_equal(a, b):
+    return abs(a - b) <= EPSILON
 
-def isPosEqual(x1, x2):
-    return abs(x1 - x2) <= POS_ELIPSON
+
+def is_pos_equal(x1, x2):
+    return abs(x1 - x2) <= POS_EPSILON
+
 
 class Point(object):
     def __init__(self, x, y):
@@ -18,13 +21,14 @@ class Point(object):
         self.x = float(x)
         self.y = float(y)
 
-    def isEqualToPoint(self, p):
+    def is_equal_to_point(self, p):
         # check if two points are, or close to, equivalent
-        return isPosEqual(self.x, p.x) and isPosEqual(self.y, p.y)
+        return is_pos_equal(self.x, p.x) and is_pos_equal(self.y, p.y)
 
     def __repr__(self):
         # print points are (x, y)
         return "(%.2f, %.2f)" % (self.x, self.y)
+
 
 class StreetSegment(object):
     def __init__(self, idx, src, dest):
@@ -50,49 +54,49 @@ class StreetSegment(object):
         # line in the form y = mx + b
         self.m = 0
         self.b = 0
-        if self.isVertical():
+        if self.is_vertical():
             self.m = float("inf")
         else:
-            self.m = self.rise/self.run
+            self.m = self.rise / self.run
             self.b = y1 - (self.m * x1)
 
-    def getIndex(self):
+    def get_index(self):
         return self.idx
 
-    def getSource(self):
+    def get_source(self):
         return self.src
 
-    def getDestination(self):
+    def get_destination(self):
         return self.dest
 
-    def isVertical(self):
-        # check if this line has an infinite slope (helps avoid divison by 0)
+    def is_vertical(self):
+        # check if this line has an infinite slope (helps avoid division by 0)
         # since the src and dest coordinates will be integers, as stated in
         # the assignment, we can compare them directly
-        return (self.src.x == self.dest.x)
+        return self.src.x == self.dest.x
 
-    def isTopDown(self):
+    def is_top_down(self):
         # will points on this segment be ordered in descending order according
         # to their y coordinate?
-        return (self.rise >= 0)
+        return self.rise >= 0
 
-    def isLtr(self):
+    def is_ltr(self):
         # will points on this segment be ordered in ascending order ("left to
         # right") according to their x coordinate
-        return (self.run >= 0)
+        return self.run >= 0
 
-    def findIntersection(self, street_name, street):
+    def find_intersection(self, street_name, street):
         # find all the intersections of this segment with the given street
         intersections = []
-        # we need to compare this segment aginst all of the segments in the
+        # we need to compare this segment against all of the segments in the
         # given street
-        for segment in street.getSegments():
+        for segment in street.get_segments():
             # look for an intersection between the two segments
-            intersection = self.findIntersectionWithSegment(segment)
+            intersection = self.find_intersection_with_segment(segment)
 
             # if there is an intersection, add all of the additional info
             # we need to store it in the graph
-            if (intersection):
+            if intersection:
                 intersections.append({
                     'street1': street_name,
                     'segment1': self,
@@ -106,17 +110,17 @@ class StreetSegment(object):
     def contains(self, p):
         # assuming p is on the infinite line given by y = mx + b, is it in the
         # segment defined by src and des
-        if (self.isLtr()):
-            return (p.x >= self.src.x and p.x <= self.dest.x)
+        if self.is_ltr():
+            return self.src.x <= p.x <= self.dest.x
         else:
-            return (p.x >= self.dest.x and p.x <= self.src.x)
+            return self.dest.x <= p.x <= self.src.x
 
-    def isParallelTo(self, segment):
+    def is_parallel_to(self, segment):
         # check if this segment is parallel to the given segment
-        return (self.isVertical() and segment.isVertical()) or (isFloatEqual(self.b, segment.b))
+        return (self.is_vertical() and segment.is_vertical()) or (is_float_equal(self.m, segment.m))
 
-    def findIntersectionWithSegment(self, segment):
-        if (self.isParallelTo(segment)):
+    def find_intersection_with_segment(self, segment):
+        if self.is_parallel_to(segment):
             """
             From the assignment FAQ:
             "a coordinate (x, y) is an intersection point only if there are two
@@ -128,8 +132,8 @@ class StreetSegment(object):
             above
             """
             return None
-        elif (self.isVertical()):
-            #TODO: move this out to a function
+        elif self.is_vertical():
+            # TODO: move this out to a function
             """
             If one of the line segments is vertical, it simplifies the
             calculation as we already know the x-coordinate of the intersection.
@@ -138,14 +142,14 @@ class StreetSegment(object):
             x = self.src.x
             y = segment.m * x + segment.b
             # check if the intersection is on the segment
-            if (self.isTopDown()):
-                if (y >= self.src.y and y <= self.dest.y):
+            if self.is_top_down():
+                if self.src.y <= y <= self.dest.y:
                     return Point(x, y)
             else:
-                if (y >= self.dest.y and y <= self.src.y):
+                if self.dest.y <= y <= self.src.y:
                     return Point(x, y)
-        elif (segment.isVertical()):
-            #TODO: move this out to a function
+        elif segment.is_vertical():
+            # TODO: move this out to a function
             """
             If one of the line segments is vertical, it simplifies the
             calculation as we already know the x-coordinate of the intersection.
@@ -154,15 +158,15 @@ class StreetSegment(object):
             x = segment.src.x
             y = self.m * x + self.b
             # check if the intersection is on the segment
-            if (segment.isTopDown()):
-                if (y >= segment.src.y and y <= segment.dest.y):
+            if segment.is_top_down():
+                if segment.src.y <= y <= segment.dest.y:
                     return Point(x, y)
             else:
-                if (y >= segment.dest.y and y <= segment.src.y):
+                if segment.dest.y <= y <= segment.src.y:
                     return Point(x, y)
         else:
             # not required as we already check if they are parallel
-            if (self.m == segment.m):
+            if self.m == segment.m:
                 return
             # find the x and y coordinate of the intersection
             x = (segment.b - self.b) / (self.m - segment.m)
@@ -171,32 +175,34 @@ class StreetSegment(object):
 
             # make sure the intersection is on both segments, the second check
             # is probably not required
-            if (self.contains(p) and segment.contains(p)):
+            if self.contains(p) and segment.contains(p):
                 return p
 
     def __repr__(self):
-        return "%d" % self.getIndex()
+        return "%d" % self.get_index()
+
 
 class Street(object):
     def __init__(self, name, coordinates):
         self.name = name
+        self.segments = []
         self.update(coordinates)
 
     def update(self, coordinates):
         self.segments = []
-        self.addSegments(coordinates)
+        self.add_segments(coordinates)
 
-    def addSegments(self, coordinates):
+    def add_segments(self, coordinates):
         # add all of the segments to this street
         for i in range(len(coordinates) - 1):
-            self.segments.append(StreetSegment(i, coordinates[i], coordinates[i+1]))
+            self.segments.append(StreetSegment(i, coordinates[i], coordinates[i + 1]))
 
-    def getSegments(self):
+    def get_segments(self):
         return self.segments
 
-    def findIntersections(self, street):
+    def find_intersections(self, street):
         # find all of the intersections between this street and the given street
         intersections = []
-        for segment in self.getSegments():
-            intersections += segment.findIntersection(self.name, street)
+        for segment in self.get_segments():
+            intersections += segment.find_intersection(self.name, street)
         return intersections

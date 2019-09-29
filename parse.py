@@ -2,8 +2,10 @@ import re
 
 from street import Point
 
+
 def throw_error(msg):
     print("Error: %s" % msg)
+
 
 """
 Action and street name regex - matches the action and street name
@@ -39,18 +41,19 @@ Ensure there is a space between the street name and coordinate list
 """
 r_valid_input = re.compile(r'(\"\s+\()')
 
+
 def parse(line):
     # parse the action and street name
     line = line.strip()
     command_info = r_input.match(line)
 
     # ensure the input was valid
-    if (not command_info):
+    if not command_info:
         return throw_error('Could not parse command and/or street name')
-    elif (command_info.group(1) in ['a', 'c'] and not r_valid_input.findall(line)):
+    elif command_info.group(1) in ['a', 'c'] and not r_valid_input.findall(line):
         return throw_error(
-        'Expected a space between the street name and start of the coordinates'
-    )
+            'Expected a space between the street name and start of the coordinates'
+        )
 
     # parse the coordinates, if present
     coordinates = []

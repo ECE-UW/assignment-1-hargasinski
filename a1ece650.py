@@ -7,12 +7,14 @@ from parse import parse
 streets = {}
 graph = Graph()
 
+
 def throw_error(msg):
     print("Error: %s" % msg)
 
+
 def add_street(street_name, coordinates):
     # check for any errors in the input
-    if not street:
+    if not street_name:
         return throw_error('A valid street name is required to add a street.')
     elif street_name in streets:
         return throw_error('Trying to add a street that already exists.')
@@ -22,20 +24,22 @@ def add_street(street_name, coordinates):
     # add the street
     base_add_street(street_name, coordinates)
 
+
 def base_add_street(street_name, coordinates):
     # create the street
     new_street = Street(street_name, coordinates)
 
     # check for any intersections with the existing streets
     for street in streets.values():
-        intersections = street.findIntersections(new_street)
+        intersections = street.find_intersections(new_street)
 
         # add the intersections to the graph
         for intersection in intersections:
-            graph.addVertex(intersection)
+            graph.add_vertex(intersection)
 
     # add the street to the database (dictionary)
     streets[street_name] = new_street
+
 
 def change_street(street_name, new_coordinates):
     # check for any errors in the input
@@ -43,17 +47,19 @@ def change_street(street_name, new_coordinates):
         return throw_error('A valid street name is required to change a street.')
     elif street_name not in streets:
         return throw_error('Trying to change a street that does not exist.')
-    elif not coordinates or len(coordinates) < 2:
+    elif not new_coordinates or len(new_coordinates) < 2:
         return throw_error('A street needs to have 2 or more points.')
 
     # change the street
     base_change_street(street_name, new_coordinates)
+
 
 def base_change_street(street_name, new_coordinates):
     # a change in a street is equivalent (mostly) to removing a street and then
     # adding it back in
     base_remove_street(street_name, new_coordinates)
     base_add_street(street_name, new_coordinates)
+
 
 def remove_street(street_name, coordinates):
     # check for any errors in the input
@@ -67,10 +73,12 @@ def remove_street(street_name, coordinates):
     # remove the street
     base_remove_street(street_name, coordinates)
 
+
 def base_remove_street(street_name, coordinates):
     # remove the street from the graph and database
-    graph.removeStreet(street_name)
+    graph.remove_street(street_name)
     del streets[street_name]
+
 
 def generate_graph(street_name, coordinates):
     # check for any errors in the input
@@ -80,10 +88,12 @@ def generate_graph(street_name, coordinates):
         return throw_error('Did not expect coordinates for this command.')
 
     print(graph)
+    print(graph.edges)
+
 
 def execute_command(command):
     # a command could not be parsed from the given line
-    if (not command):
+    if not command:
         return
 
     # could be made global
@@ -100,7 +110,7 @@ def execute_command(command):
     # the parser
     if action not in valid_commands:
         throw_error(
-            'Command `%s` not recongized, please enter a valid command', action
+            'Command `%s` not recognized, please enter a valid command' % action
         )
         return
 
@@ -110,12 +120,13 @@ def execute_command(command):
         command.get('coordinates')
     )
 
-def main():
-    ### YOUR MAIN CODE GOES HERE
 
-    ### sample code to read from stdin.
-    ### make sure to remove all spurious print statements as required
-    ### by the assignment
+def main():
+    # YOUR MAIN CODE GOES HERE
+
+    # sample code to read from stdin.
+    # make sure to remove all spurious print statements as required
+    # by the assignment
     while True:
         line = sys.stdin.readline()
         if line == '':
@@ -124,6 +135,7 @@ def main():
 
     # return exit code 0 on successful termination
     sys.exit(0)
+
 
 if __name__ == '__main__':
     main()
