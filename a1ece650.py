@@ -88,7 +88,6 @@ def generate_graph(street_name, coordinates):
         return throw_error('Did not expect coordinates for this command.')
 
     print(graph)
-    print(graph.edges)
 
 
 def execute_command(command):
