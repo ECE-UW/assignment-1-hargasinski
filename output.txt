@@ -1,4 +1,4 @@
-Marking #65: StudentInfo(repo='assignment-1-hargasinski', first='HUBERT', last='ARGASINSKI', watiam='hargasin', studentid=20527730, email='hargasinski@uwaterloo.ca')
+Marking #0: StudentInfo(repo='assignment-1-hargasinski-master', first='HUBERT', last='ARGASINSKI', watiam='hargasin', studentid=20527730, email='hargasinski@uwaterloo.ca')
 Mark = 0
 
 Running test 0:	 +20
@@ -14,9 +14,7 @@ b this is bad input
 
 Output:
 ----
-read a line: b this is bad input
-
-Finished reading input
+Error: Could not parse command and/or street name.
 
 ----
 
@@ -26,7 +24,7 @@ Error: Incorrect input format
 
 ----
 
-Marks: +0	(20 total)
+Marks: +5	(25 total)
 
 --------------
 Running test: tests/test02.in
@@ -39,11 +37,7 @@ a   "up and across st" (0,0)(10,10)
 
 Output:
 ----
-read a line: a   "up and across st" (0,0)(10,10)
-
-read a line: a   "up and across st" (0,0)(10,10)
-
-Finished reading input
+Error: Trying to add a street that already exists.
 
 ----
 
@@ -53,7 +47,7 @@ Error: street currently exists.
 
 ----
 
-Marks: +0	(20 total)
+Marks: +5	(30 total)
 
 --------------
 Running test: tests/test03.in
@@ -66,11 +60,7 @@ c "down and across st" (0,10)(10,0)
 
 Output:
 ----
-read a line: a   "up and across st" (0,0)(10,10)
-
-read a line: c "down and across st" (0,10)(10,0)
-
-Finished reading input
+Error: Trying to change a street that does not exist.
 
 ----
 
@@ -80,7 +70,7 @@ Error: 'c' or 'r' specified for a street that does not exist.
 
 ----
 
-Marks: +0	(20 total)
+Marks: +5	(35 total)
 
 --------------
 Running test: tests/test04.in
@@ -93,11 +83,7 @@ r "down and across st" (0,10) (10,0) )
 
 Output:
 ----
-read a line: a   "up and across st" (0,0)(10,10)
-
-read a line: r "down and across st" (0,10) (10,0) )
-
-Finished reading input
+Error: Trying to remove a street that does not exist.
 
 ----
 
@@ -107,7 +93,7 @@ Error: Incorrect input format
 
 ----
 
-Marks: +0	(20 total)
+Marks: +5	(40 total)
 
 --------------
 Running test: tests/test05.in
@@ -119,9 +105,7 @@ a   "up and across st" ( 0 , 0 )(10,10
 
 Output:
 ----
-read a line: a   "up and across st" ( 0 , 0 )(10,10
-
-Finished reading input
+Error: A street needs to have 2 or more points.
 
 ----
 
@@ -131,7 +115,7 @@ Error: Incorrect input format
 
 ----
 
-Marks: +0	(20 total)
+Marks: +5	(45 total)
 
 --------------
 Running test: tests/test06.in
@@ -148,19 +132,10 @@ g
 
 Output:
 ----
-read a line: a "Weber Street" (2,-1)(2,2) (5,5) (5,6) (3,8)
-
-read a line: a "King Street S" (4,2) (4,8)
-
-read a line: a "Davenport Road" (1,4) (5,8)
-
-read a line: c "Weber Street" (2,1) (2,2)
-
-read a line: r "King Street S"
-
-read a line: g
-
-Finished reading input
+V = {
+}
+E = {
+}
 
 ----
 
@@ -172,10 +147,9 @@ E = {
 }
 
 ----
-Could not process answer:	Could not parse output
-Comparison result:	RHS is None
+Comparison result:	Equal
 
-Marks: +0	(20 total)
+Marks: +15	(60 total)
 
 --------------
 Running test: tests/test07.in
@@ -189,13 +163,19 @@ g
 
 Output:
 ----
-read a line: a "up and across st" (0,0) (10,10)
-
-read a line: a "down and across st" (0,10)(10,0)
-
-read a line: g
-
-Finished reading input
+V = {
+  0: (5.00, 5.00)
+  1: (0.00, 0.00)
+  2: (10.00, 10.00)
+  3: (0.00, 10.00)
+  4: (10.00, 0.00)
+}
+E = {
+  <3,0>,
+  <0,4>,
+  <1,0>,
+  <0,2>
+}
 
 ----
 
@@ -217,10 +197,9 @@ E = {
 
 
 ----
-Could not process answer:	Could not parse output
-Comparison result:	RHS is None
+Comparison result:	Equal
 
-Marks: +0	(20 total)
+Marks: +20	(80 total)
 
 --------------
 Running test: tests/test08.in
@@ -235,15 +214,34 @@ g
 
 Output:
 ----
-read a line: a "Weber Street" (2,-1) (2,2) (5,5) (5,6) (3,8)
-
-read a line: a "King Street S" (3,2) (4,8)
-
-read a line: a "Davenport Road" (0,0) (5,8)
-
-read a line: g
-
-Finished reading input
+V = {
+  0: (3.20, 3.20)
+  1: (2.00, 2.00)
+  2: (5.00, 5.00)
+  3: (3.00, 2.00)
+  4: (4.00, 8.00)
+  5: (3.86, 7.14)
+  6: (5.00, 6.00)
+  7: (3.00, 8.00)
+  8: (4.23, 6.77)
+  9: (0.00, 0.00)
+  10: (5.00, 8.00)
+  11: (3.64, 5.82)
+}
+E = {
+  <1,0>,
+  <0,2>,
+  <6,8>,
+  <8,5>,
+  <5,7>,
+  <3,0>,
+  <0,11>,
+  <11,5>,
+  <5,4>,
+  <9,11>,
+  <11,8>,
+  <8,10>
+}
 
 ----
 
@@ -279,10 +277,9 @@ E = {
 }
 
 ----
-Could not process answer:	Could not parse output
-Comparison result:	RHS is None
+Comparison result:	Equal
 
-Marks: +0	(20 total)
+Marks: +20	(100 total)
 
 --------------
 Running test: tests/test09.in
@@ -297,15 +294,10 @@ g
 
 Output:
 ----
-read a line: a "Amphitheatre Prkw" (2,-1)(2,2) (5,5) (5,6) (3,8)
-
-read a line: c "amphitheatre PRKW" (0,0)(4,0)
-
-read a line: a "One Infinite Loop" (3,0)(5,0)
-
-read a line: g
-
-Finished reading input
+V = {
+}
+E = {
+}
 
 ----
 
@@ -324,14 +316,13 @@ E = {
 }
 
 ----
-Could not process answer:	Could not parse output
-Comparison result:	RHS is None
+Comparison result:	Different vertices
 
-Marks: +0	(20 total)
+Marks: +0	(100 total)
 
 
 --------------
 
 Finished marking
-Total mark: 20 / 100
-Final mark: 20
+Total mark: 100 / 100
+Final mark: 100
